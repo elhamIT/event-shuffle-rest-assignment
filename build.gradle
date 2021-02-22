@@ -1,0 +1,78 @@
+buildscript {
+    repositories {
+        jcenter()
+       mavenCentral()
+       maven { url "http://plugins.gradle.org/m2/" }
+    }
+
+    dependencies {
+        //For building Kotlin
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+
+apply plugin: 'kotlin'
+apply plugin: 'application'
+
+group "com.assignment"
+version "0.0.1"
+mainClassName = "main.kotlin.com.assignment.Appplication"
+
+sourceSets {
+    main.kotlin.srcDirs = main.java.srcDirs = ['src']
+    test.kotlin.srcDirs = test.java.srcDirs = ['test']
+    main.resources.srcDirs = ['resources']
+    test.resources.srcDirs = ['testresources']
+}
+
+
+repositories {
+    mavenLocal()
+    jcenter()
+    maven { url "https://kotlin.bintray.com/ktor" }
+}
+
+dependencies {
+    //Kotlin Dependencies:
+    // default kotlin
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    //netty server for ktor
+    implementation "io.ktor:ktor-server-netty:$ktor_version"
+    //logging
+    implementation "ch.qos.logback:logback-classic:$logback_version"
+    implementation "org.slf4j:slf4j-api:1.7.2"
+    // ktor server
+    implementation "io.ktor:ktor-server-core:$ktor_version"
+    // gson for ktor
+    implementation "io.ktor:ktor-gson:$ktor_version"
+    // kodein for ktor
+    implementation "org.kodein.di:kodein-di-framework-ktor-server-jvm:7.0.0"
+
+    // Database Dependencies:
+    implementation "org.jetbrains.exposed:exposed-core:$exposed_version"
+    implementation "org.jetbrains.exposed:exposed-dao:$exposed_version"
+    implementation "org.jetbrains.exposed:exposed-jdbc:$exposed_version"
+    implementation "org.jetbrains.exposed:exposed-jodatime:$exposed_version"
+    // JDBC Connection Pool
+    implementation "com.zaxxer:HikariCP:3.4.5"
+    // JDBC Connector for PostgreSQL
+    implementation "org.postgresql:postgresql:42.2.1"
+    implementation 'org.testng:testng:7.1.0'
+
+    //HTTP client
+    implementation "io.ktor:ktor-client-core:$ktor_version"
+    implementation "io.ktor:ktor-client-apache:$ktor_version"
+    implementation "io.ktor:ktor-client-json:$ktor_version"
+    implementation "io.ktor:ktor-client-gson:$ktor_version"
+    implementation "io.ktor:ktor-client-features:$ktor_version"
+
+    // test framework
+    testImplementation "io.ktor:ktor-server-tests:$ktor_version"
+}
+
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
