@@ -1,6 +1,6 @@
 package main.kotlin.com.assignment.rest
 
-import exception.RequestException
+import main.kotlin.com.assignment.exception.RequestException
 import io.ktor.application.*
 import io.ktor.http.*
 import io.ktor.request.*

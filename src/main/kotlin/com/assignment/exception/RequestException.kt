@@ -1,4 +1,4 @@
-package exception
+package main.kotlin.com.assignment.exception
 
 import io.ktor.http.*
 import java.lang.Exception
