@@ -6,6 +6,9 @@ import io.ktor.routing.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
 import main.kotlin.com.assignment.configuration.DatabaseFactory
+import main.kotlin.com.assignment.database.table.EventDates
+import main.kotlin.com.assignment.database.table.Events
+import main.kotlin.com.assignment.database.table.Votes
 import main.kotlin.com.assignment.logging.getLogger
 import main.kotlin.com.assignment.services.EventService
 import org.slf4j.Logger
@@ -15,7 +18,7 @@ fun Application.restService(
     eventService: EventService,
     logger: Logger
 ){
-    DatabaseFactory.init()
+    DatabaseFactory.createTables(listOf(Events, EventDates, Votes))
     install(DefaultHeaders)
     install(CallLogging)
     install(Routing) {

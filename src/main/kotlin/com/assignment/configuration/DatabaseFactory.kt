@@ -1,21 +1,13 @@
 package main.kotlin.com.assignment.configuration
 
-import com.typesafe.config.ConfigFactory
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
-import io.ktor.config.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
-import org.jetbrains.exposed.sql.Database
+import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 
-object DatabaseFactory {
+object DatabaseFactory : ()-> Database {
 
-    fun init() {
-        Database.connect(hikari())
-    }
-
-    private fun hikari(): HikariDataSource {
+    override fun invoke(): Database {
         val config = HikariConfig()
         config.driverClassName = System.getenv("JDBC_DRIVER")
         config.jdbcUrl = System.getenv("JDBC_DATABASE_URL")
@@ -31,12 +23,28 @@ object DatabaseFactory {
             config.password = password
         }
         config.validate()
-        return HikariDataSource(config)
+        return fromDataSource(HikariDataSource(config))
     }
 
-    suspend fun <T> dbQuery(block: () -> T): T =
-        withContext(Dispatchers.IO) {
-            transaction { block() }
+    private fun fromDataSource(dataSource: HikariDataSource): Database {
+        val db by lazy {
+            Database.connect(dataSource)
         }
+        return db
+    }
+
+    fun <T> query(db: Database, query: () -> T): T =
+        transaction(db) {
+            addLogger(StdOutSqlLogger)
+            query()
+        }
+
+    fun createTables(tables: List<Table>) {
+        tables.forEach { table ->
+        transaction {
+            SchemaUtils.createMissingTablesAndColumns(table)
+        }
+        }
+    }
 }
 

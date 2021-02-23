@@ -39,7 +39,11 @@ fun Route.eventShuffleRoute(
         logger.debug("${call.request.httpMethod} to ${call.request.uri}")
         return@post resolveRequest(call) {
             val eventToAdd = receiveEventData(call, logger)
-            eventService.addEvent(eventToAdd)
+            val event = eventService.addEventWithDates(eventToAdd)
+            Gson().toJson(event)
         }
     }
+    /*
+
+     */
 }
