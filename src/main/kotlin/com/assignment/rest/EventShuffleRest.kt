@@ -43,7 +43,30 @@ fun Route.eventShuffleRoute(
             Gson().toJson(event)
         }
     }
-    /*
 
+    /*
+   GET details of events (event name, given dates and votes)
+    */
+    get("/{id}") {
+        logger.debug("${call.request.httpMethod} to ${call.request.uri}")
+        resolveRequest(call) {
+            val id = getLongFromParameter(call.parameters, "id")
+            val detailedEvent = eventService.showEventWithDetails(id)
+            Gson().toJson(detailedEvent)
+        }
+    }
+
+    /*
+    POST votes of a voter for dates for an event
      */
+    post("/{id}/vote") {
+        logger.debug("${call.request.httpMethod} to ${call.request.uri}")
+        return@post resolveRequest(call) {
+            val id = getLongFromParameter(call.parameters, "id")
+            val votesToAdd = receiveVoteData(call, logger)
+            eventService.addVotesToEvent(id, votesToAdd)
+            val detailedEvent = eventService.showEventWithDetails(id)
+            Gson().toJson(detailedEvent)
+        }
+    }
 }

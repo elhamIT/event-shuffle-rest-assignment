@@ -1,6 +1,5 @@
 package main.kotlin.com.assignment.database.model
 
-import main.kotlin.com.assignment.database.table.Events
 import main.kotlin.com.assignment.database.table.Votes
 import org.jetbrains.exposed.sql.ResultRow
 import org.joda.time.DateTime

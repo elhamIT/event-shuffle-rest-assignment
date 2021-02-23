@@ -1,27 +1,49 @@
 package main.kotlin.com.assignment.services
 
 import main.kotlin.com.assignment.database.EventShufflePersistence
-import main.kotlin.com.assignment.database.model.Event
-import main.kotlin.com.assignment.database.model.EventToAdd
-import main.kotlin.com.assignment.database.model.VoteToAdd
+import main.kotlin.com.assignment.database.model.*
 
 class EventServiceImpl(
     private val eventShufflePersistence: EventShufflePersistence
 ) : EventService {
     override fun getAllEvents(): List<Event>? {
-        return eventShufflePersistence.getAll()
+        return eventShufflePersistence.getAllEvents()
     }
 
-    override fun addEventWithDates(eventToAdd: EventToAdd): Int {
-        val event = eventShufflePersistence.getByName(eventToAdd.name)
-        return 0
+    override fun addEventWithDates(eventToAdd: EventToAdd): Long {
+        val event = eventShufflePersistence.getEventByName(eventToAdd.name)
+            ?: return eventShufflePersistence.insertEventWithDates(eventToAdd)
+        return event.id
     }
 
-    override fun showEventWithDetails(eventId: Long): String {
-        TODO("Not yet implemented")
+    override fun showEventWithDetails(eventId: Long): DetailedEvent? {
+        val event = eventShufflePersistence.getEventById(eventId)
+        val eventDates = eventShufflePersistence.getEventDatesByEventId(eventId)
+        val votesToShow = if (!eventDates.isNullOrEmpty()) eventDates.map { eventDate ->
+            val votes = eventShufflePersistence.getVotesByDateAndEventId(eventDate.date, eventId)
+            VoteToShow(
+                date = eventDate.date,
+                people = if (!votes.isNullOrEmpty()) votes.map { vote -> vote.voter } else emptyList()
+            )
+        } else emptyList()
+
+        if (event != null){
+            return DetailedEvent(
+                id = event.id,
+                eventName = event.eventName,
+                dates = if (!eventDates.isNullOrEmpty()) eventDates.map { eventDate -> eventDate.date } else emptyList(),
+                votes = votesToShow
+                )
+        }
+        return null
     }
 
-    override fun addVotesToEvent(eventId: Long, voteToAdd: VoteToAdd): String {
-        TODO("Not yet implemented")
+    override fun addVotesToEvent(eventId: Long, votesToAdd: VotesToAdd): DetailedEvent? {
+        val event = eventShufflePersistence.getEventById(eventId)
+        if (event != null) {
+            eventShufflePersistence.insertVote(eventId, votesToAdd)
+            showEventWithDetails(eventId)
+        }
+        return null
     }
 }
