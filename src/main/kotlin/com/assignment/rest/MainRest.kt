@@ -18,6 +18,7 @@ fun Application.restService(
     eventService: EventService,
     logger: Logger
 ){
+    DatabaseFactory.invoke()
     DatabaseFactory.createTables(listOf(Events, EventDates, Votes))
     install(DefaultHeaders)
     install(CallLogging)

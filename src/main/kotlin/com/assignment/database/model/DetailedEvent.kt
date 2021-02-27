@@ -1,23 +1,51 @@
 package main.kotlin.com.assignment.database.model
 
-import com.google.gson.Gson
-import org.joda.time.DateTime
-import java.util.*
+import main.kotlin.com.assignment.gson.gson
+import org.joda.time.LocalDateTime
+
+
+/**
+ *
+example:
+{
+  "id": 0,
+  "name": "Jake's secret party",
+  "dates": [
+    "2014-01-01",
+    "2014-01-05",
+    "2014-01-12"
+  ],
+  "votes": [
+    {
+      "date": "2014-01-01",
+      "people": [
+        "John",
+        "Julia",
+        "Paul",
+        "Daisy",
+        "Dick"
+      ]
+    },
+    {
+      "date": "2014-01-05",
+      "people": [
+        "Dick"
+      ]
+    }
+  ]
+}
+
+ */
 
 data class DetailedEvent(
     val id: Long,
     val eventName: String,
-    val dates: List<DateTime>,
+    val dates: List<LocalDateTime>,
     val votes:List<VoteToShow>
 ) {
     companion object {
-        fun toJson(detailedEvent: DetailedEvent): String {
-            return Gson().toJson(detailedEvent, DetailedEvent::class.java)
+        fun toJson(detailedEvent: DetailedEvent?): String {
+            return gson.toJson(detailedEvent, DetailedEvent::class.java)
         }
     }
 }
-
-data class VoteToShow(
-    val date: DateTime,
-    val people:List<String>
-)

@@ -22,7 +22,7 @@ class EventServiceImpl(
         val votesToShow = if (!eventDates.isNullOrEmpty()) eventDates.map { eventDate ->
             val votes = eventShufflePersistence.getVotesByDateAndEventId(eventDate.date, eventId)
             VoteToShow(
-                date = eventDate.date,
+                date = eventDate.date.toLocalDateTime(),
                 people = if (!votes.isNullOrEmpty()) votes.map { vote -> vote.voter } else emptyList()
             )
         } else emptyList()
@@ -31,7 +31,7 @@ class EventServiceImpl(
             return DetailedEvent(
                 id = event.id,
                 eventName = event.eventName,
-                dates = if (!eventDates.isNullOrEmpty()) eventDates.map { eventDate -> eventDate.date } else emptyList(),
+                dates = if (!eventDates.isNullOrEmpty()) eventDates.map { eventDate -> eventDate.date.toLocalDateTime() } else emptyList(),
                 votes = votesToShow
                 )
         }
@@ -45,5 +45,9 @@ class EventServiceImpl(
             showEventWithDetails(eventId)
         }
         return null
+    }
+
+    override fun showEventResults(eventId: Long): EventResults? {
+        TODO("Not yet implemented")
     }
 }

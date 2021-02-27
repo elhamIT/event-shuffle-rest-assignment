@@ -6,6 +6,7 @@ import io.ktor.http.*
 import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
+import main.kotlin.com.assignment.database.model.DetailedEvent
 import main.kotlin.com.assignment.services.EventService
 import org.slf4j.Logger
 
@@ -14,14 +15,14 @@ fun Route.eventShuffleRoute(
     logger: Logger
 ) {
 
-    /*
+    /**
     Test if service works
      */
     get("/test") {
         call.respondText("SERVICE WORKS!", contentType = ContentType.Text.Plain)
     }
 
-    /*
+    /**
     GET list of events
      */
     get("/list") {
@@ -32,32 +33,32 @@ fun Route.eventShuffleRoute(
         }
     }
 
-    /*
-    POST an event with suggested dates
+    /**
+    POST an event with its dates
      */
     post() {
         logger.debug("${call.request.httpMethod} to ${call.request.uri}")
         return@post resolveRequest(call) {
             val eventToAdd = receiveEventData(call, logger)
-            val event = eventService.addEventWithDates(eventToAdd)
-            Gson().toJson(event)
+            val eventId = eventService.addEventWithDates(eventToAdd)
+            EventResponse(id = eventId).toJson()
         }
     }
 
-    /*
-   GET details of events (event name, given dates and votes)
+    /**
+   GET details of an event (event name, given dates and votes)
     */
     get("/{id}") {
         logger.debug("${call.request.httpMethod} to ${call.request.uri}")
         resolveRequest(call) {
             val id = getLongFromParameter(call.parameters, "id")
             val detailedEvent = eventService.showEventWithDetails(id)
-            Gson().toJson(detailedEvent)
+            DetailedEvent.toJson(detailedEvent)
         }
     }
 
-    /*
-    POST votes of a voter for dates for an event
+    /**
+    POST votes of a voter for dates of an event
      */
     post("/{id}/vote") {
         logger.debug("${call.request.httpMethod} to ${call.request.uri}")
@@ -66,7 +67,25 @@ fun Route.eventShuffleRoute(
             val votesToAdd = receiveVoteData(call, logger)
             eventService.addVotesToEvent(id, votesToAdd)
             val detailedEvent = eventService.showEventWithDetails(id)
-            Gson().toJson(detailedEvent)
+            DetailedEvent.toJson(detailedEvent)
         }
     }
+
+    /**
+    GET results of an event (an event with dates that are suitable for all participants.)
+     */
+    get("/{id}/results") {
+        logger.debug("${call.request.httpMethod} to ${call.request.uri}")
+        resolveRequest(call) {
+            val id = getLongFromParameter(call.parameters, "id")
+            val eventResults = eventService.showEventResults(id)
+            Gson().toJson(eventResults)
+        }
+    }
+}
+
+data class EventResponse(
+    val id: Long
+) {
+    fun toJson(): String = Gson().toJson(this)
 }

@@ -46,8 +46,8 @@ dependencies {
     implementation "io.ktor:ktor-server-core:$ktor_version"
     // gson for ktor
     implementation "io.ktor:ktor-gson:$ktor_version"
-    // kodein for ktor
-    implementation "org.kodein.di:kodein-di-framework-ktor-server-jvm:7.0.0"
+    // JSON
+    implementation "org.json:json:20190722"
 
     // Database Dependencies:
     implementation "org.jetbrains.exposed:exposed-core:$exposed_version"

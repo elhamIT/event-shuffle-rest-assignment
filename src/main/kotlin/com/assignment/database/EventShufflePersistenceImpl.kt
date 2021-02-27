@@ -15,7 +15,7 @@ class EventShufflePersistenceImpl(
 
     override fun getAllEvents(): List<Event>? {
         return query(db) {
-            Events.selectAll()
+            Events.selectAll().filterNotNull()
         }.map { Event.from(it) }
     }
 
