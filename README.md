@@ -15,8 +15,8 @@ An event is created by posting a name and suitable dates to the backend, events 
 ## Running the project
 
 1. clone the repo
-2. you need to have postgres running
-3. set the `JDBC_DATABASE_URL, DB_USER and DB_PASSWORD` environment variables
+2. you need to have postgres running on OS and create database called `events` (you can use `pgadmin`)
+3. set the `JDBC_DRIVER, JDBC_DATABASE_URL, DB_USER and DB_PASSWORD` environment variables (you can get them from `local-environment.env` and set them in `Edit Configuration`)
 4. build with gradle and run the project `Appplication.kt`
 5. Access to `http://127.0.0.1:5000/`
 

@@ -1,7 +1,6 @@
 package main.kotlin.com.assignment.database.model
 
-import com.google.gson.Gson
-import org.joda.time.DateTime
+import main.kotlin.com.assignment.gson.gson
 
 /**
  *
@@ -27,11 +26,11 @@ import org.joda.time.DateTime
 data class EventResults(
     val id: Long,
     val eventName: String,
-    val suitableDates:List<VoteToShow>
+    val suitableDates: List<VoteToShow?>?
 ) {
     companion object {
-        fun toJson(eventResults: EventResults): String {
-            return Gson().toJson(eventResults, EventResults::class.java)
+        fun toJson(eventResults: EventResults?): String {
+            return gson.toJson(eventResults, EventResults::class.java)
         }
     }
 }

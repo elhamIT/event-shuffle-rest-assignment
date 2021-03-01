@@ -5,6 +5,8 @@ import org.joda.time.DateTime
 import org.joda.time.LocalDateTime
 import java.lang.reflect.Type
 import java.text.SimpleDateFormat
+import java.lang.Exception
+
 
 class LocalDateTimeSerializer : JsonSerializer<LocalDateTime> {
     override fun serialize(src: LocalDateTime?, typeOfSrc: Type?, context: JsonSerializationContext?): JsonElement {
@@ -16,6 +18,11 @@ class LocalDateTimeSerializer : JsonSerializer<LocalDateTime> {
 
 class DateTimeDeserializer : JsonDeserializer<DateTime> {
     override fun deserialize(json: JsonElement?, typeOfT: Type?, context: JsonDeserializationContext?): DateTime {
-        return DateTime(json?.asString)
+        val formatter = SimpleDateFormat("yyyy-MM-dd")
+        return try {
+            DateTime(formatter.parse(json?.asString))
+        } catch (e: Exception) {
+            throw JsonParseException("Unparseable date, date format should be yyyy-MM-dd")
+        }
     }
 }
