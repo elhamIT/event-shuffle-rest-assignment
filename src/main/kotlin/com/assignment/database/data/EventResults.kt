@@ -1,4 +1,4 @@
-package main.kotlin.com.assignment.database.model
+package main.kotlin.com.assignment.database.data
 
 import main.kotlin.com.assignment.gson.gson
 
@@ -26,7 +26,7 @@ import main.kotlin.com.assignment.gson.gson
 data class EventResults(
     val id: Long,
     val eventName: String,
-    val suitableDates: List<VoteToShow?>?
+    val suitableDates: ArrayList<VoteToShow?>?
 ) {
     companion object {
         fun toJson(eventResults: EventResults?): String {

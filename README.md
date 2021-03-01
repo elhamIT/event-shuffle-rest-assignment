@@ -118,6 +118,24 @@ Returns json representation of `DetailedEvent` after the votes are added.
 `GET /{id}/results`
 Requires an event's id path parameter as a long value.
 Returns json representation of `EventResults` which indicates the dates that are suitable for all participants.
+```
+{
+  "id": 0,
+  "name": "Jake's secret party",
+  "suitableDates": [
+    {
+      "date": "2014-01-01",
+      "people": [
+        "John",
+        "Julia",
+        "Paul",
+        "Daisy",
+        "Dick"
+      ]
+    }
+  ]
+}
+```
 
 
 

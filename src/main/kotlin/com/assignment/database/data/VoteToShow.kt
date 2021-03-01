@@ -1,4 +1,4 @@
-package main.kotlin.com.assignment.database.model
+package main.kotlin.com.assignment.database.data
 
 import org.joda.time.LocalDateTime
 
@@ -17,5 +17,5 @@ import org.joda.time.LocalDateTime
  */
 data class VoteToShow(
  val date: LocalDateTime,
- val people:List<String>
+ val people:ArrayList<String>
 )

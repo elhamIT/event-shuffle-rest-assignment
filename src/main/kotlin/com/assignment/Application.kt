@@ -3,6 +3,9 @@ package main.kotlin.com.assignment
 import main.kotlin.com.assignment.configuration.DatabaseFactory
 import main.kotlin.com.assignment.database.EventShufflePersistence
 import main.kotlin.com.assignment.database.EventShufflePersistenceImpl
+import main.kotlin.com.assignment.database.table.EventDates
+import main.kotlin.com.assignment.database.table.Events
+import main.kotlin.com.assignment.database.table.Votes
 import main.kotlin.com.assignment.logging.getLogger
 import main.kotlin.com.assignment.rest.MainRest
 import main.kotlin.com.assignment.services.EventService
@@ -26,7 +29,9 @@ class Application {
     private val mainRest = MainRest(5000, eventService)
 
     fun start() {
-                logger.info("Starting EventShuffleRestAPI...")
-                mainRest.start()
+        logger.info("Starting EventShuffleRestAPI...")
+        DatabaseFactory.invoke()
+        DatabaseFactory.createTables(listOf(Events, EventDates, Votes))
+        mainRest.start()
     }
 }

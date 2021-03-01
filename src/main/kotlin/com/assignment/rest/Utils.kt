@@ -5,8 +5,8 @@ import io.ktor.application.*
 import io.ktor.http.*
 import io.ktor.request.*
 import io.ktor.response.*
-import main.kotlin.com.assignment.database.model.EventToAdd
-import main.kotlin.com.assignment.database.model.VotesToAdd
+import main.kotlin.com.assignment.database.data.EventToAdd
+import main.kotlin.com.assignment.database.data.VotesToAdd
 import org.slf4j.Logger
 
 suspend fun resolveRequest (call: ApplicationCall, request: suspend () -> String) {

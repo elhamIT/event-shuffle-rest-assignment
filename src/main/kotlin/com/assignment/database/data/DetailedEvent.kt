@@ -1,4 +1,4 @@
-package main.kotlin.com.assignment.database.model
+package main.kotlin.com.assignment.database.data
 
 import main.kotlin.com.assignment.gson.gson
 import org.joda.time.LocalDateTime
@@ -40,8 +40,8 @@ example:
 data class DetailedEvent(
     val id: Long,
     val eventName: String,
-    val dates: List<LocalDateTime>,
-    val votes:List<VoteToShow>
+    val dates: ArrayList<LocalDateTime>,
+    val votes:ArrayList<VoteToShow>
 ) {
     companion object {
         fun toJson(detailedEvent: DetailedEvent?): String {

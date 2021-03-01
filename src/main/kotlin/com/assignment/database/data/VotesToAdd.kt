@@ -1,4 +1,4 @@
-package main.kotlin.com.assignment.database.model
+package main.kotlin.com.assignment.database.data
 
 import com.google.gson.annotations.SerializedName
 import main.kotlin.com.assignment.gson.gson
@@ -21,7 +21,7 @@ data class VotesToAdd(
     val name: String,
 
     @SerializedName("votes")
-    val votes: Array<DateTime>
+    val votes: ArrayList<DateTime>
 ) {
     companion object {
         fun fromJson(json: String): VotesToAdd {

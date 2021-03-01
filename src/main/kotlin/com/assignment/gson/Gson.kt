@@ -6,5 +6,6 @@ import org.joda.time.LocalDateTime
 
 val gson = GsonBuilder()
     .registerTypeAdapter(DateTime::class.java, DateTimeDeserializer())
+    .registerTypeAdapter(DateTime::class.java, DateTimeSerializer())
     .registerTypeAdapter(LocalDateTime::class.java, LocalDateTimeSerializer())
     .create()

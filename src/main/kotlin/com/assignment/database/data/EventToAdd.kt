@@ -1,4 +1,4 @@
-package main.kotlin.com.assignment.database.model
+package main.kotlin.com.assignment.database.data
 
 import com.google.gson.annotations.SerializedName
 import main.kotlin.com.assignment.gson.gson
@@ -23,7 +23,7 @@ data class EventToAdd(
     val name: String,
 
     @SerializedName("dates")
-    val dates: Array<DateTime>
+    val dates: ArrayList<DateTime>
 )  {
     companion object {
         fun fromJson(json: String): EventToAdd {

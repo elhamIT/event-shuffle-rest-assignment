@@ -6,7 +6,8 @@ import io.ktor.http.*
 import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
-import main.kotlin.com.assignment.database.model.DetailedEvent
+import main.kotlin.com.assignment.database.data.DetailedEvent
+import main.kotlin.com.assignment.database.data.EventResults
 import main.kotlin.com.assignment.services.EventService
 import org.slf4j.Logger
 
@@ -65,8 +66,7 @@ fun Route.eventShuffleRoute(
         return@post resolveRequest(call) {
             val id = getLongFromParameter(call.parameters, "id")
             val votesToAdd = receiveVoteData(call, logger)
-            eventService.addVotesToEvent(id, votesToAdd)
-            val detailedEvent = eventService.showEventWithDetails(id)
+            val detailedEvent = eventService.addVotesToEvent(id, votesToAdd)
             DetailedEvent.toJson(detailedEvent)
         }
     }
@@ -79,7 +79,7 @@ fun Route.eventShuffleRoute(
         resolveRequest(call) {
             val id = getLongFromParameter(call.parameters, "id")
             val eventResults = eventService.showEventResults(id)
-            Gson().toJson(eventResults)
+            EventResults.toJson(eventResults)
         }
     }
 }

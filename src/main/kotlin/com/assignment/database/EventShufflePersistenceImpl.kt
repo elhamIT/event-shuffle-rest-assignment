@@ -1,13 +1,14 @@
 package main.kotlin.com.assignment.database
 
 import main.kotlin.com.assignment.configuration.DatabaseFactory.query
+import main.kotlin.com.assignment.database.data.EventToAdd
+import main.kotlin.com.assignment.database.data.VotesToAdd
 import main.kotlin.com.assignment.database.model.*
 import main.kotlin.com.assignment.database.table.EventDates
 import main.kotlin.com.assignment.database.table.Events
 import main.kotlin.com.assignment.database.table.Votes
 import org.jetbrains.exposed.sql.*
 import org.joda.time.DateTime
-import java.util.*
 
 class EventShufflePersistenceImpl(
     private val db: Database
@@ -54,13 +55,13 @@ class EventShufflePersistenceImpl(
         return eventId
     }
 
-    override fun insertVote(id: Long, votesToAdd: VotesToAdd) {
+    override fun insertVote(id: Long, voteToAdd: DateTime, voter: String) {
         query(db) {
-            Votes.batchInsert(votesToAdd.votes.asIterable()) { vote ->
-                this[Votes.eventId] = id
-                this[Votes.date] = vote
-                this[Votes.voter] = votesToAdd.name
-            }
+            Votes.insert {
+                it[eventId] = id
+                it[date] = voteToAdd
+                it[Votes.voter] = voter
+            } get Votes.id
         }
     }
 
@@ -77,6 +78,14 @@ class EventShufflePersistenceImpl(
             Votes.select{
                 Votes.eventId eq id and (Votes.date eq evetDate)
             }.map { Vote.from(it) }
+        }
+    }
+
+    override fun getVoteByDateAndEventIdAndVoter(evetDate: DateTime, id: Long, person: String): Vote? {
+        return query(db) {
+            Votes.select{
+                Votes.eventId eq id and (Votes.date eq evetDate) and (Votes.voter eq person)
+            }.map { Vote.from(it) }.firstOrNull()
         }
     }
 }
