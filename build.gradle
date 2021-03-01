@@ -68,7 +68,13 @@ dependencies {
     implementation "io.ktor:ktor-client-features:$ktor_version"
 
     // test framework
-    testImplementation "io.ktor:ktor-server-tests:$ktor_version"
+    implementation 'org.junit.jupiter:junit-jupiter:5.4.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.4.0'
+    compile "io.kotlintest:kotlintest-runner-junit5:3.4.2"
+    compile "com.h2database:h2:1.4.200"
+    compile "io.mockk:mockk:1.10.0"
+    compile "io.ktor:ktor-client-mock-jvm:$ktor_version"
+    implementation "io.ktor:ktor-server-test-host:$ktor_version"
 }
 
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
